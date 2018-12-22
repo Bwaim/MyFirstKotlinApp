@@ -20,8 +20,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-class MediaItem
+import android.widget.ImageView
+import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 /**
  * Created by Fabien Boismoreau on 22/12/2018.
@@ -41,8 +42,13 @@ class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapt
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MediaItem) {
 
+        val title = itemView.findViewById<TextView>(R.id.media_title)
+        val image = itemView.findViewById<ImageView>(R.id.image)
+
+        fun bind(item: MediaItem) {
+            title.text = item.title
+            Picasso.with(image.context).load(item.thumbUrl).into(image)
         }
     }
 }
