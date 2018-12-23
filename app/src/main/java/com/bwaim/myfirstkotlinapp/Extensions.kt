@@ -16,18 +16,19 @@
 
 package com.bwaim.myfirstkotlinapp
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.widget.EditText
+import android.content.Context
+import android.support.v7.widget.RecyclerView
+import android.widget.Toast
 
-class MainActivity : AppCompatActivity() {
+/**
+ * Created by Fabien Boismoreau on 23/12/2018.
+ * <p>
+ */
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
 
-        val message = findViewById<EditText>(R.id.message)
-
-
-    }
+fun RecyclerView.ViewHolder.toast(message: String) {
+    itemView.context.toast(message)
 }
