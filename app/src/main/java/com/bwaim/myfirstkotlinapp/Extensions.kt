@@ -42,3 +42,8 @@ fun ViewGroup.inflate(layout: Int, attachToRoot: Boolean = false): View =
     LayoutInflater.from(context).inflate(layout, this, attachToRoot)
 
 fun ImageView.loadUrl(url: String) = Picasso.with(context).load(url).into(this)
+
+inline fun <reified T : View> View.find(id: Int): T {
+    return findViewById(id)
+
+}
