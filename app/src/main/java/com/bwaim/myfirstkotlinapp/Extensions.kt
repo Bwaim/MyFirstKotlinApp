@@ -18,7 +18,12 @@ package com.bwaim.myfirstkotlinapp
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import com.squareup.picasso.Picasso
 
 /**
  * Created by Fabien Boismoreau on 23/12/2018.
@@ -32,3 +37,8 @@ fun Context.toast(message: String) {
 fun RecyclerView.ViewHolder.toast(message: String) {
     itemView.context.toast(message)
 }
+
+fun ViewGroup.inflate(layout: Int, attachToRoot: Boolean = false): View =
+    LayoutInflater.from(context).inflate(layout, this, attachToRoot)
+
+fun ImageView.loadUrl(url: String) = Picasso.with(context).load(url).into(this)

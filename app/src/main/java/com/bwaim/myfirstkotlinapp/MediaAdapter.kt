@@ -17,12 +17,10 @@
 package com.bwaim.myfirstkotlinapp
 
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
 
 /**
  * Created by Fabien Boismoreau on 22/12/2018.
@@ -31,7 +29,8 @@ import com.squareup.picasso.Picasso
 class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_media_item, parent, false)
+//        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_media_item, parent, false)
+        val view = parent.inflate(R.layout.view_media_item)
         return ViewHolder(view)
     }
 
@@ -48,7 +47,8 @@ class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapt
 
         fun bind(item: MediaItem) {
             title.text = item.title
-            Picasso.with(image.context).load(item.thumbUrl).into(image)
+//            Picasso.with(image.context).load(item.thumbUrl).into(image)
+            image.loadUrl(item.thumbUrl)
         }
     }
 }
