@@ -20,4 +20,6 @@ package com.bwaim.myfirstkotlinapp
  * Created by Fabien Boismoreau on 23/12/2018.
  * <p>
  */
-data class MediaItem(val title: String, val thumbUrl: String)
+data class MediaItem(val title: String, val thumbUrl: String, val type: Type) {
+    enum class Type { PHOTO, VIDEO }
+}

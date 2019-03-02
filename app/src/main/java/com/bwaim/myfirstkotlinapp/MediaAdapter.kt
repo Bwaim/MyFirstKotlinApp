@@ -44,12 +44,17 @@ class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapt
 
         //        val title = itemView.findViewById<TextView>(R.id.media_title)
         val title = itemView.find<TextView>(R.id.media_title)
-        val image = itemView.findViewById<ImageView>(R.id.image)
+        val image = itemView.findViewById<ImageView>(R.id.media_thumb)
+        val playIndicator = itemView.findViewById<ImageView>(R.id.media_video_indicator)
 
         fun bind(item: MediaItem) {
             title.text = item.title
 //            Picasso.with(image.context).load(item.thumbUrl).into(image)
             image.loadUrl(item.thumbUrl)
+            playIndicator.visibility = when (item.type) {
+                MediaItem.Type.PHOTO -> View.GONE
+                MediaItem.Type.VIDEO -> View.VISIBLE
+            }
         }
     }
 }
