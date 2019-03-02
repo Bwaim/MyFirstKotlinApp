@@ -19,8 +19,7 @@ package com.bwaim.myfirstkotlinapp
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import kotlinx.android.synthetic.main.view_media_item.view.*
 
 /**
  * Created by Fabien Boismoreau on 22/12/2018.
@@ -29,7 +28,6 @@ import android.widget.TextView
 class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_media_item, parent, false)
         val view = parent.inflate(R.layout.view_media_item)
         return ViewHolder(view)
     }
@@ -42,14 +40,12 @@ class MediaAdapter(val items: List<MediaItem>) : RecyclerView.Adapter<MediaAdapt
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        //        val title = itemView.findViewById<TextView>(R.id.media_title)
-        val title = itemView.find<TextView>(R.id.media_title)
-        val image = itemView.findViewById<ImageView>(R.id.media_thumb)
-        val playIndicator = itemView.findViewById<ImageView>(R.id.media_video_indicator)
+        val title = itemView.media_title
+        val image = itemView.media_thumb
+        val playIndicator = itemView.media_video_indicator
 
         fun bind(item: MediaItem) {
             title.text = item.title
-//            Picasso.with(image.context).load(item.thumbUrl).into(image)
             image.loadUrl(item.thumbUrl)
             playIndicator.visibility = when (item.type) {
                 MediaItem.Type.PHOTO -> View.GONE
