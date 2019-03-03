@@ -16,16 +16,18 @@
 
 package com.bwaim.myfirstkotlinapp
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+/**
+ * Created by Fabien Boismoreau on 03/03/2019.
+ * <p>
+ */
 
-class MainActivity : AppCompatActivity() {
+fun doAsync(x: Int, callBack: (String) -> Unit) {
+    // background task
+    callBack("Finished ${x}")
+}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        recycler.adapter = MediaAdapter(getMedia()) { toast(it.title) }
+fun test() {
+    doAsync(2) {
+        print(it)
     }
 }
