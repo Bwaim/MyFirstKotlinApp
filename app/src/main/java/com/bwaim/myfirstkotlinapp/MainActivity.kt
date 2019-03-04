@@ -18,14 +18,17 @@ package com.bwaim.myfirstkotlinapp
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import android.support.v7.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recycler.adapter = MediaAdapter(getMedia()) { (title) -> toast(title) }
+        recyclerView.adapter = MediaAdapter(getMedia()) { (title) -> toast(title) }
+
     }
 }

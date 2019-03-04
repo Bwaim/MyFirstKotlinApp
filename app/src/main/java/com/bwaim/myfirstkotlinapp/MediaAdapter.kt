@@ -20,13 +20,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.view_media_item.view.*
+import kotlin.properties.Delegates
 
 /**
  * Created by Fabien Boismoreau on 22/12/2018.
  * <p>
  */
-class MediaAdapter(val items: List<MediaItem>, val listener: (MediaItem) -> Unit) :
+class MediaAdapter(items: List<MediaItem>, val listener: (MediaItem) -> Unit) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
+
+    var items: List<MediaItem> by Delegates.observable(items) { _, _, _ -> notifyDataSetChanged() }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val view = parent.inflate(R.layout.view_media_item)
