@@ -20,11 +20,15 @@ package com.bwaim.myfirstkotlinapp
  * Created by Fabien Boismoreau on 03/03/2019.
  * <p>
  */
-private val thumbBase = "http://lorempixel.com/400/400/cats/"
+object MediaProvider {
+    private val thumbBase = "http://lorempixel.com/400/400/cats/"
 
-fun getMedia() = (1..10).map {
-    MediaItem(
-        "Title $it", "$thumbBase$it",
-        if (it % 3 == 0) MediaItem.Type.VIDEO else MediaItem.Type.PHOTO
-    )
+    val medias by lazy {
+        (1..10).map {
+            MediaItem(
+                "Title $it", "$thumbBase$it",
+                if (it % 3 == 0) MediaItem.Type.VIDEO else MediaItem.Type.PHOTO
+            )
+        }
+    }
 }

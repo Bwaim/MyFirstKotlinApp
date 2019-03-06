@@ -25,7 +25,7 @@ import android.view.MenuItem
 class MainActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
-    private val adapter = MediaAdapter(getMedia()) { (title) -> toast(title) }
+    private val adapter = MediaAdapter(MediaProvider.medias) { (title) -> toast(title) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        adapter.items = getMedia().let { media ->
+        adapter.items = MediaProvider.medias.let { media ->
             when (item.itemId) {
                 R.id.filter_all -> media
                 R.id.filter_photos -> media.filter { it.type == MediaItem.Type.PHOTO }
