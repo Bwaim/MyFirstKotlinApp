@@ -16,6 +16,9 @@
 
 package com.bwaim.myfirstkotlinapp
 
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+
 /**
  * Created by Fabien Boismoreau on 03/03/2019.
  * <p>
@@ -23,12 +26,22 @@ package com.bwaim.myfirstkotlinapp
 object MediaProvider {
     private val thumbBase = "http://lorempixel.com/400/400/cats/"
 
-    val medias by lazy {
-        (1..10).map {
-            MediaItem(
-                "Title $it", "$thumbBase$it",
-                if (it % 3 == 0) MediaItem.Type.VIDEO else MediaItem.Type.PHOTO
-            )
+    private var data = emptyList<MediaItem>()
+
+    fun mediaAsync(callback: (List<MediaItem>) -> Unit) {
+        doAsync {
+            if (data.isEmpty()) {
+                Thread.sleep(2_000)
+                data = (1..10).map {
+                    MediaItem(
+                        "Title $it", "$thumbBase$it",
+                        if (it % 3 == 0) MediaItem.Type.VIDEO else MediaItem.Type.PHOTO
+                    )
+                }
+            }
+            uiThread {
+                callback(data)
+            }
         }
     }
 }

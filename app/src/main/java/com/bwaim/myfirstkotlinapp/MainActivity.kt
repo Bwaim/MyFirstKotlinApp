@@ -25,11 +25,13 @@ import android.view.MenuItem
 class MainActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
-    private val adapter = MediaAdapter(MediaProvider.medias) { (title) -> toast(title) }
+    private val adapter = MediaAdapter { (title) -> toast(title) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        MediaProvider.mediaAsync { adapter.items = it }
 
         recyclerView.adapter = adapter
 
@@ -41,8 +43,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        adapter.items = MediaProvider.medias.let { media ->
-            when (item.itemId) {
+        MediaProvider.mediaAsync { media ->
+            adapter.items = when (item.itemId) {
                 R.id.filter_all -> media
                 R.id.filter_photos -> media.filter { it.type == MediaItem.Type.PHOTO }
                 R.id.filter_videos -> media.filter { it.type == MediaItem.Type.VIDEO }
