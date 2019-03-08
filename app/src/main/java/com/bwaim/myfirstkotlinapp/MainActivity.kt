@@ -21,11 +21,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
-    private val adapter = MediaAdapter { (title) -> toast(title) }
+    private val adapter = MediaAdapter { navigateToDetail(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,5 +53,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    private fun navigateToDetail(item: MediaItem) {
+        startActivity<DetailActivity>(DetailActivity.ID to item.id)
     }
 }
