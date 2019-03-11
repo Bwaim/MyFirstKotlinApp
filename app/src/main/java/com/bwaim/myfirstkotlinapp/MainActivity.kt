@@ -44,18 +44,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val filter = when (item.itemId) {
+            R.id.filter_photos -> Filter.ByType(MediaItem.Type.PHOTO)
+            R.id.filter_videos -> Filter.ByType(MediaItem.Type.VIDEO)
+            else -> Filter.None()
+        }
+
+        loadFilteredData(filter)
+
+        return true
+    }
+
+    private fun loadFilteredData(filter: Filter) {
         MediaProvider.mediaAsync { media ->
-            adapter.items = when (item.itemId) {
-                R.id.filter_all -> media
-                R.id.filter_photos -> media.filter { it.type == MediaItem.Type.PHOTO }
-                R.id.filter_videos -> media.filter { it.type == MediaItem.Type.VIDEO }
-                else -> emptyList()
+            adapter.items = when (filter) {
+
+                is Filter.None -> media
+                is Filter.ByType -> media.filter { it.type == filter.type }
             }
         }
-        return true
     }
 
     private fun navigateToDetail(item: MediaItem) {
         startActivity<DetailActivity>(DetailActivity.ID to item.id)
     }
+}
+
+sealed class Filter {
+    class None : Filter()
+    class ByType(val type: MediaItem.Type) : Filter()
 }
