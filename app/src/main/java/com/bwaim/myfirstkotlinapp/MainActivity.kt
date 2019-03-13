@@ -21,6 +21,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
@@ -51,18 +55,19 @@ class MainActivity : AppCompatActivity() {
             else -> Filter.None()
         }
 
-        loadFilteredData(filter)
+        GlobalScope.launch(Dispatchers.Main) {
+            val media1 = withContext(Dispatchers.IO) { MediaProvider.dataSync("cats") }
+            val media2 = withContext(Dispatchers.IO) { MediaProvider.dataSync("nature") }
+            updateData(media1 + media2, filter)
+        }
 
         return true
     }
 
-    private fun loadFilteredData(filter: Filter) {
-        MediaProvider.mediaAsync { media ->
+    private fun updateData(media: List<MediaItem>, filter: Filter) {
             adapter.items = when (filter) {
-
                 is Filter.None -> media
                 is Filter.ByType -> media.filter { it.type == filter.type }
-            }
         }
     }
 
