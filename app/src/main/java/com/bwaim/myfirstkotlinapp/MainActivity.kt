@@ -23,8 +23,8 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         GlobalScope.launch(Dispatchers.Main) {
-            val media1 = withContext(Dispatchers.IO) { MediaProvider.dataSync("cats") }
-            val media2 = withContext(Dispatchers.IO) { MediaProvider.dataSync("nature") }
-            updateData(media1 + media2, filter)
+            val media1 = async(Dispatchers.IO) { MediaProvider.dataSync("cats") }
+            val media2 = async(Dispatchers.IO) { MediaProvider.dataSync("nature") }
+            updateData(media1.await() + media2.await(), filter)
         }
 
         return true
