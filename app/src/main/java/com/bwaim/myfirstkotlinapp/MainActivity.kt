@@ -24,6 +24,7 @@ import android.view.MenuItem
 import kotlinx.coroutines.*
 import org.jetbrains.anko.startActivity
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var job: Job
@@ -65,10 +66,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         launch {
             val media1 = async(Dispatchers.IO) { MediaProvider.dataSync("cats") }
             val media2 = async(Dispatchers.IO) { MediaProvider.dataSync("nature") }
-            updateData(media1.await() + media2.await(), filter)
+            val media3 = useAsync()
+            updateData(media1.await() + media2.await() + media3, filter)
         }
 
         return true
+    }
+
+    private suspend fun useAsync(): List<MediaItem> = suspendCancellableCoroutine { continuation ->
+        MediaProvider.mediaAsync { media ->
+            continuation.resume(media)
+        }
     }
 
     private fun updateData(media: List<MediaItem>, filter: Filter) {
