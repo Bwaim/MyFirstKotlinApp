@@ -21,25 +21,32 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.jetbrains.anko.startActivity
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
     private val adapter = MediaAdapter { navigateToDetail(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
         setContentView(R.layout.activity_main)
 
         MediaProvider.mediaAsync { adapter.items = it }
 
         recyclerView.adapter = adapter
 
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             else -> Filter.None()
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
+        launch {
             val media1 = async(Dispatchers.IO) { MediaProvider.dataSync("cats") }
             val media2 = async(Dispatchers.IO) { MediaProvider.dataSync("nature") }
             updateData(media1.await() + media2.await(), filter)
